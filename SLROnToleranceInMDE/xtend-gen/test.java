@@ -1,6 +1,8 @@
+import com.google.common.base.Objects;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,21 +13,30 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 
 @SuppressWarnings("all")
 public class test {
-  public static List<String> venues = new ArrayList<String>();
+  public static Set<String> filtervenues = new HashSet<String>();
   
   public static void main(final String[] args) {
     try {
       final test instance = new test();
-      HashMap<String, String> id_to_authors = new HashMap<String, String>();
+      FileReader _fileReader = new FileReader("C:\\Users\\Suganya\\Downloads\\dblp.v11\\venuesexpansion.txt");
+      BufferedReader br = new BufferedReader(_fileReader);
+      String sCurrentLine = "";
+      String filtered = "";
+      while ((!Objects.equal((sCurrentLine = br.readLine()), null))) {
+        {
+          filtered = test.getOnlyStrings(sCurrentLine);
+          test.filtervenues.add(filtered.toLowerCase());
+        }
+      }
       List<PapersPojo> papers = new ArrayList<PapersPojo>();
       Set<Integer> years = new HashSet<Integer>();
       boolean core = true;
       String datasetname = "FinalDataset.txt";
       PrintWriter writer = new PrintWriter("src\\Papers\\initial.msl", "UTF-8");
-      papers = JsonParse.extractAuthors(Boolean.valueOf(core), datasetname);
+      papers = JsonParse.extractAuthors(Boolean.valueOf(core), datasetname, test.filtervenues);
       datasetname = "References_dataset.txt";
       core = false;
-      papers = JsonParse.extractAuthors(Boolean.valueOf(false), datasetname);
+      papers = JsonParse.extractAuthors(Boolean.valueOf(false), datasetname, test.filtervenues);
       for (final PapersPojo paper : papers) {
         years.add(paper.getYear());
       }
@@ -232,18 +243,31 @@ public class test {
       _builder.append("�var v=PapersPojo.venues_global�\t");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("�FOR s : v.entrySet�");
+      _builder.append("�var Set<String> venues = new HashSet�");
       _builder.newLine();
       _builder.append("\t");
+      _builder.append("�FOR paper : papers�");
       _builder.newLine();
-      _builder.append("            ");
-      _builder.append("venue�s.getValue�:Venue {");
+      _builder.append("\t ");
+      _builder.append("�IF (!venues.contains(paper.getVenuename().toLowerCase))�");
       _builder.newLine();
-      _builder.append("            \t");
-      _builder.append(".Name : \"�getOnlyStrings(s.getKey)�\"");
+      _builder.append("\t       ");
+      _builder.append("venue�paper.getVenue�:Venue {");
       _builder.newLine();
-      _builder.append("            ");
+      _builder.append("\t             \t");
+      _builder.append(".Name : \"�paper.getVenuename�\"");
+      _builder.newLine();
+      _builder.append("\t             \t");
+      _builder.append(".SE: �paper.getSE�");
+      _builder.newLine();
+      _builder.append("\t             ");
       _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t              ");
+      _builder.append("�{venues.add(paper.getVenuename().toLowerCase); \"\" }�");
+      _builder.newLine();
+      _builder.append("\t  \t\t\t\t        ");
+      _builder.append("�ENDIF�");
       _builder.newLine();
       _builder.append("            ");
       _builder.append("�ENDFOR�");
