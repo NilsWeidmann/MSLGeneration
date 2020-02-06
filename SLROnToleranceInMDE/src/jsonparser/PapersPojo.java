@@ -1,10 +1,17 @@
+package jsonparser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+/**
+ * This class contains all the getters and setters for the properties of paper.
+ 
+ * @author Suganya Kannan
+ * @version 1.0
+ * @since 2020-01-30
+ */
 public class PapersPojo {
 	
 	
