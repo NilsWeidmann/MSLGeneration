@@ -32,22 +32,13 @@ public class test {
       Set<Integer> years = new HashSet<Integer>();
       boolean core = true;
       String datasetname = "FinalDataset.txt";
-      PrintWriter writer = new PrintWriter("src\\Papers\\initial.msl", "UTF-8");
+      PrintWriter writer = new PrintWriter("src\\Papers\\Authors.msl", "UTF-8");
       papers = JsonParse.extractAuthors(Boolean.valueOf(core), datasetname, test.filtervenues);
-      datasetname = "References_dataset.txt";
+      datasetname = "References_dataset_new.txt";
       core = false;
       papers = JsonParse.extractAuthors(Boolean.valueOf(false), datasetname, test.filtervenues);
-      for (final PapersPojo paper : papers) {
-        years.add(paper.getYear());
-      }
-      for (final Integer year : years) {
-        {
-          PrintWriter _printWriter = new PrintWriter((("src\\Papers\\Paper" + year) + ".msl"), "UTF-8");
-          writer = _printWriter;
-          writer.println(instance.generatePapersMSL(papers, year));
-          writer.close();
-        }
-      }
+      writer.println(instance.generateAuthorsMSL(papers));
+      writer.close();
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -104,6 +95,9 @@ public class test {
       _builder.newLine();
       _builder.append("            \t");
       _builder.append(".core : �paper.getCore()�");
+      _builder.newLine();
+      _builder.append("            \t");
+      _builder.append(".relevance:�paper.getRelevance()�");
       _builder.newLine();
       _builder.append("            \t");
       _builder.append("-venue->venue�paper.getVenue()�");

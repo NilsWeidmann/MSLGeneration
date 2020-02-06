@@ -5,4 +5,9 @@ Bundle-Version: 0.0.1
 Bundle-SymbolicName: SLROnToleranceInMDE;singleton:=true
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.emoflon.neo.neo4j.adapter
+Require-Bundle: org.emoflon.neo.neo4j.adapter,
+ org.emoflon.neo.engine.modules,
+ org.eclipse.xtext,
+ org.apache.commons.logging,
+ org.apache.log4j,
+ org.apache.commons.lang3
